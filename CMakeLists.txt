@@ -1,14 +1,29 @@
-
 cmake_minimum_required(VERSION 3.29.0)
-project(planing)
+project(planning)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-aux_source_directory(. SRC_LISTS)
-add_executable(plannig_main ${SRC_LISTS})
 
-set_target_properties(
-    plannig_main PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY
-    ${PROJECT_SOURCE_DIR}/bin
-  )
+aux_source_directory(${PROJECT_SOURCE_DIR}/src SRC_LISTS)
+add_library(common
+SHARED
+${SRC_LISTS}
+)
+
+target_include_directories(common
+PUBLIC
+${PROJECT_SOURCE_DIR}/include
+)
+
+add_executable(planning_main ${PROJECT_SOURCE_DIR}/planning_mian.cpp)
+
+target_include_directories(planning_main
+PUBLIC
+${PROJECT_SOURCE_DIR}/include
+)
+
+target_link_libraries(planning_main
+PUBLIC
+common
+)
